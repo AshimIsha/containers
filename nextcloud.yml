@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: nextcloud
-        image: docker.io/nextcloud:stable-apache
+        image: mirror.gcr.io/nextcloud:stable-apache
         resources:
           limits:
             cpu: 500m
@@ -38,37 +38,25 @@ spec:
         - name: http
           containerPort: 80
           protocol: TCP
-        env:
-        - name: NEXTCLOUD_UPDATE
-          value: '1'
-        - name: ALLOW_EMPTY_PASSWORD
-          value: 'yes'
-        - name: POSTGRES_HOST
-          value: postgres-service
-        - name: POSTGRES_DB
-          valueFrom:
-            configMapKeyRef:
-              name: postgres-configmap
-              key: POSTGRES_DB
-        - name: NEXTCLOUD_TRUSTED_DOMAINS
-          value: "127.0.0.1"
-        - name: POSTGRES_USER
-          valueFrom:
-            configMapKeyRef:
-              name: postgres-configmap
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: postgres-configmap
-              key: POSTGRES_PASSWORD
-        - name: NEXTCLOUD_ADMIN_USER
-          value: any_name_you_want
-        - name: NEXTCLOUD_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nextcloud-secret
-              key: NEXTCLOUD_ADMIN_PASSWORD
+        envFrom:
+        - configMapRef:
+            name: nextcloud-configmap 
+        - secretRef:
+            name: postgres-secret
+        - secretRef:
+            name: nextcloud-secret
+        livenessProbe:
+          httpGet:
+            path: /status.php
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /status.php
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
         imagePullPolicy: IfNotPresent
       restartPolicy: Always
       dnsPolicy: ClusterFirst
