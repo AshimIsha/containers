@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: nextcloud
-        image: docker.io/nextcloud:stable-apache
+        image: mirror.gcr.io/nextcloud:stable-apache
         resources:
           limits:
             cpu: 500m
