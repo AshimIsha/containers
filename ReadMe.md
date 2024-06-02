@@ -15,3 +15,13 @@
 
 #### kubectl nexcloud
 ![img](./src/kubectl_nextcloud.png)
+![img](./src/kubectlNextcloud.PNG)
+
+#### NodePort
+![img](./src/NodePort.PNG)
+
+#### minikube
+![img](./src/minicubeNextcloud.PNG)
+
+
+
