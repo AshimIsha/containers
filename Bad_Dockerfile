@@ -1,4 +1,4 @@
-FROM python:3.9.5
+FROM python:latest
 
 # лишние слои
 RUN apt-get update
@@ -13,7 +13,5 @@ WORKDIR /app
 RUN cd config && pip install -r requirements.txt
 
 EXPOSE 8501
-
-# отсутствие healthchek и volume
 
 ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
