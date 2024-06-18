@@ -1,9 +1,9 @@
 Шаг 1: 
 ![Docker образ](imgs/docker_image.PNG)
 
-Шаг 2:
+Шаг 2: Деплой 2х сервисов
 ![kubectl create -f ...](imgs/deploy.PNG)
 
-Шаг 3:
+Шаг 3: Логи 
 ![Логи](imgs/pg.PNG)
 ![Логи](imgs/streamlit.PNG)
