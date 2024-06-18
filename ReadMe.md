@@ -1,9 +1,9 @@
 Шаг 1: 
-![Docker образ](imgs/docker_image.png)
+![Docker образ](imgs/docker_image.PNG)
 
 Шаг 2:
-![kubectl create -f ...](imgs/deploy.png)
+![kubectl create -f ...](imgs/deploy.PNG)
 
 Шаг 3:
-![Логи](imgs/pg)
-![Логи](imgs/streamlit)
+![Логи](imgs/pg.PNG)
+![Логи](imgs/streamlit.PNG)
