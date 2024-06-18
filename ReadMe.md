@@ -5,5 +5,4 @@
 ![kubectl create -f ...](imgs/deploy.PNG)
 
 Шаг 3: Логи 
-![Логи](imgs/pg.PNG)
-![Логи](imgs/streamlit.PNG)
+
