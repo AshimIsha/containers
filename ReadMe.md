@@ -5,4 +5,4 @@
 ![kubectl create -f ...](imgs/deploy.PNG)
 
 Шаг 3: Логи 
-
+![PG_POD](imgs/pg.PNG)
