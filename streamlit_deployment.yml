@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: streamlit-configmap
+  labels:
+    app: streamlit
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit-service
+  labels:
+    app: streamlit
+spec:
+  type: NodePort
+  ports:
+   - port: 8004
+  selector:
+   app: streamlit
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: streamlit
+  labels:
+    app: streamlit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit
+  template:
+    metadata:
+      labels:
+        app: streamlit
+    spec:
+      containers:
+      - name: streamlit
+        image: test/custom-image:latest
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 128Mi
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: volume-cfg
+          mountPath: ./app/config
+        livenessProbe:
+          httpGet:
+            path: /status.php
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /status.php
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - name: init-celery
+        image: test/custom-image:latest
+        command: ["echo", "test"]
+        imagePullPolicy: "IfNotPresent"
+      volumes:
+      - name: volume-cfg
+        configMap:
+            name: streamlit-config
