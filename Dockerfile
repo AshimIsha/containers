@@ -1,20 +1,17 @@
-FROM mirror.gcr.io/python:3.9.5
+FROM python:3.10
 
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y \
-    && mkdir /app
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y && mkdir /app
 
+COPY requirements.txt /app
 
-COPY ./config/* ./app/config/
-COPY ./trainer/* ./app/trainer/
-COPY ./app.py/ ./app
+RUN pip install -r app/requirements.txt
+
+COPY ./main.py /app
+COPY ./input/* /app/input/
+COPY ./model.keras /app
 
 WORKDIR /app
 
-RUN cd config && pip install -r requirements.txt
+EXPOSE 80
 
-EXPOSE 8501
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
-
-VOLUME ./app/config
-
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
