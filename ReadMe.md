@@ -6,3 +6,8 @@
 
 Шаг 3: Логи 
 ![PG_POD](imgs/pg_pod.PNG)
+
+![Stramlit_POD](imgs/st_logs.PNG)
+
+
+![PODs](imgs/pods.PNG)
