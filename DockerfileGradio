@@ -1,0 +1,16 @@
+FROM python:3.10
+
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y && mkdir /app_gradio
+
+COPY requirements.txt /app_gradio
+
+RUN pip install -r /app_gradio/requirements.txt
+
+COPY ./gradio_front.py /app_gradio
+
+WORKDIR /app_gradio
+
+EXPOSE 7861
+
+CMD ["uvicorn", "gradio_front:app_gradio", "--host", "0.0.0.0", "--port", "7861"]
+

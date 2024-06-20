@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradio-service
+  labels:
+    app: gradio
+spec:
+  type: NodePort
+  ports:
+   - port: 7861
+  selector:
+   app: gradio
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gradio-configmap
+  labels:
+    app: gradio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradio
+  template:
+    metadata:
+      labels:
+        app: gradio
+    spec:
+      containers:
+        - name: gradio-container
+          image: gradio-custom:v01
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 7861
+          envFrom:
+            - configMapRef:
+                name: gradio-configmap

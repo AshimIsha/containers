@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastapi-configmap
+  labels:
+    app: fastapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fast-api-service
+  labels:
+    app: fastapi
+spec:
+  type: NodePort
+  ports:
+   - port: 80
+  selector:
+   app: fastapi
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: fastapi
+  labels:
+    app: fastapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      initContainers:
+      - name: fastapi-init
+        image: fastapi-custom:v01
+        command: ["ls", "-l"]
+        imagePullPolicy: Never
+      volumes:
+      - name: volume-cfg
+      containers:
+      - name: fastapi
+        image: fastapi-custom:v01
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: fastapi-configmap
+        volumeMounts:
+        - name: volume-cfg
+          mountPath: /etc/
+        livenessProbe:
+          httpGet:
+            path: /hello/docker
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        imagePullPolicy: Never
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      
+      
+      
+        
