@@ -1,13 +1,10 @@
-Шаг 1: 
-![Docker образ](imgs/docker_image.PNG)
+Образы загружены командой minikube image load
 
-Шаг 2: Деплой 2х сервисов
-![kubectl create -f ...](imgs/deploy.PNG)
+![kubectl create -f ...](fastapi_logs.PNG)
 
-Шаг 3: Логи 
-![PG_POD](imgs/pg_pod.PNG)
+![kubectl create -f ...](gradio_logs.PNG)
 
-![Stramlit_POD](imgs/st_logs.PNG)
+![Dashboard](dash_1.PNG)
 
+![Dashboard](dash_2.PNG)
 
-![PODs](imgs/pods.PNG)
